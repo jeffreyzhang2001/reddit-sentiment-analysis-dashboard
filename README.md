@@ -1,4 +1,4 @@
-# reddit-sentiment-analysis-dashboard
+# Reddit Sentiment Analysis Dashboard
 This web app utilizes **Django, Reddit's API, Pushshift's API** and **Google's Cloud Natural Language API** to offer an at-a-glance
 breakdown of desired subreddit's overarching sentiment, with detailed statistics for each post and comment.
 
