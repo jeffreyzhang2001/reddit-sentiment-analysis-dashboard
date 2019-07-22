@@ -35,42 +35,48 @@
             data-src="https://picsum.photos/id/274/1200/900/?blur=8" alt="" data-uk-cover data-uk-img
     >
     <div class="uk-flex uk-flex-center uk-flex-middle uk-height-viewport uk-position-z-index uk-position-relative" data-uk-height-viewport="min-height: 400">
+        
         <!-- NAV -->
         <div class="uk-position-top">
             <div class="uk-container uk-container-small">
                 <nav class="uk-navbar-container uk-navbar-transparent" data-uk-navbar>  
                     <div class="uk-navbar-left">
                         <div class="uk-navbar-item">
-                            <a class="uk-logo" href="">RedditSentiment</a>
+                            <a class="uk-logo" href="/">RedditSentiment</a>
                         </div>
                     </div>
                     <div class="uk-navbar-right">
                         <ul class="uk-navbar-nav">
-                            <li class="uk-active uk-visible@m"><a href="" data-uk-icon="home"></a></li>
-                            <li class="uk-visible@s"><a href="/about/">About</a></li>
+                            <li class="uk-active uk-visible@m"><a href="/" data-uk-icon="home"></a></li>
+                            <li class="uk-visible@s"><a href="">About</a></li>
                         </ul>
                     </div>
                 </nav>
             </div>
         </div>
         <!-- /NAV -->
-        <!-- TEXT -->
-        <div class="uk-container uk-container-small uk-flex-auto uk-text-center" data-uk-scrollspy="target: > .animate; cls: uk-animation-slide-bottom-small uk-invisible; delay: 300">
-            <h1 class="uk-heading-primary animate uk-invisible" style="font-weight: 500;">Reddit Sentiment Analyzer</h1>
-            <div class="uk-width-4-5@m uk-margin-auto animate uk-invisible">
-                <p class="lead uk-text-secondary">Enter a subreddit, and view the top sentiments Redditors express and share:</p>
-            </div>
-
-            <!-- SUBREDDIT FORM -->
-            <form class="uk-margin-medium-top animate uk-invisible" data-uk-margin data-uk-scrollspy-class="uk-animation-fade uk-invisible" method="GET" action="analyze_sentiment/">                
-                <div class="uk-margin">
-                    {{subreddit_form.as_p}}
-                </div>
-                <button type="submit" class="uk-button uk-button-default uk-button-large uk-width-2-3 uk-width-auto@s" data-uk-icon="arrow-right">Analyze</button>
-            </form>
-            <!-- SUBREDDIT FORM -->
+        <!-- ABOUT TEXT -->
+        <div class="uk-container uk-container-small uk-flex-auto uk-text-left" data-uk-scrollspy="target: > .animate; cls: uk-animation-slide-bottom-small uk-invisible; delay: 300">
+            <article class="uk-article animate uk-invisible">
+                <h1 class="uk-article-title">About</h1>
+            
+                <p class="uk-text-lead">The source code for this website can be found on my <a href="https://github.com/jeffreyzhang2001/reddit-sentiment-analysis-dashboard" uk-icon="icon: github; ratio: 2"></a>.</p>
+            
+                <p class="uk-text-meta"><strong>TECHNOLOGIES USED</strong></p>
+                
+                <dl class="uk-description-list uk-description-list-divider">
+                        <dt class="uk-text-primary">Django</dt>
+                        <dd>Django, a Python-based web framework, composes the skeleton of the website.</dd>
+                        <dt class="uk-text-primary">Pushshift API</dt>
+                        <dd>Pushshift's API is queried for detailed submission data, which is then passed to Reddit's API.</dd>
+                        <dt class="uk-text-primary">Reddit API</dt>
+                        <dd>Reddit's API is queried using submission data from Pushshift's API, returning detailed comment information.</dd>
+                        <dt class="uk-text-primary">Google Cloud Natural Language API</dt>
+                        <dd>Google's Cloud NLP API is called on cleaned comment text, returning sentiment data to be parsed.</dd>
+                    </dl>   
+            </article>
         </div>
-        <!-- /TEXT -->
+        <!-- / ABOUT TEXT -->
     </div>
 </body>
 </html>

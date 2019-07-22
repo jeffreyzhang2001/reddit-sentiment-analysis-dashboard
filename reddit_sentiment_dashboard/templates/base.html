@@ -1,1 +1,25 @@
-{% block page_content %}{% endblock %}
+<!doctype html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- UIkit CSS -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.1.6/css/uikit.min.css" />
+</head>
+
+<body>
+    {% block content %}{% endblock %}
+    <div class="uk-flex uk-flex-center uk-flex-middle uk-position-z-index uk-position-relative">
+        <!-- FOOT -->
+        <div class="uk-position-bottom-center uk-position-small">
+            <span class="uk-text-small uk-text-center">Jeffrey Zhang © 2019 | Powered by <img src="{% static 'reddit-logo.svg'%}" width="30" height="30" uk-svg> API</span>
+        </div>
+        <!-- /FOOT -->
+    </div>
+</body>
+
+<!-- UIkit JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.1.6/js/uikit.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.1.6/js/uikit-icons.min.js"></script>
+</html>
