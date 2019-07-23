@@ -47,6 +47,7 @@
                     </div>
                     <div class="uk-navbar-right">
                         <ul class="uk-navbar-nav">
+                            <li class="uk-active uk-visible@m"><a href="https://github.com/jeffreyzhang2001/reddit-sentiment-analysis-dashboard" data-uk-icon="icon: github; ratio: 1.3"></a></li>
                             <li class="uk-active uk-visible@m"><a href="/" data-uk-icon="home"></a></li>
                             <li class="uk-visible@s"><a href="">About</a></li>
                         </ul>
@@ -61,7 +62,6 @@
                 <h1 class="uk-article-title">About</h1>
             
                 <p class="uk-text-lead">The source code for this website can be found on my <a href="https://github.com/jeffreyzhang2001/reddit-sentiment-analysis-dashboard" uk-icon="icon: github; ratio: 2"></a>.</p>
-            
                 <p class="uk-text-meta"><strong>TECHNOLOGIES USED</strong></p>
                 
                 <dl class="uk-description-list uk-description-list-divider">
@@ -71,7 +71,8 @@
                         <dd>Reddit's API is queried with the user's desired subreddit, returning detailed comment and submission information.</dd>
                         <dt class="uk-text-primary">Google Cloud Natural Language API</dt>
                         <dd>Google's Cloud NLP API is called on cleaned comment text, returning sentiment data to be parsed.</dd>
-                    </dl>   
+                </dl>
+                <p class="uk-text-small">Note: if all comments show the same number of upvotes, that means the subreddit has set comment scores to be hidden for a period of time after being posted.</p>
             </article>
         </div>
         <!-- / ABOUT TEXT -->

@@ -2,21 +2,24 @@
 import praw
 from .api_keys import reddit_client_id, reddit_client_secret, reddit_user_agent
 
-#Import NotFound to validate subreddit form
+# Import NotFound to validate subreddit form
 from prawcore import NotFound
+
+#RANDOM MODULE FOR DEBUGGING
+import random
+
+# Import time modules for UTC to local timezone conversion
+import time
 
 # Imports the Google Cloud client library
 from google.cloud import language
 from google.cloud.language import enums
 from google.cloud.language import types
 
-#RANDOM MODULE FOR DEBUGGING
-import random
-
-#Create a Google Cloud client instance
+# Create a Google Cloud client instance
 google_client = language.LanguageServiceClient()
 
-#PRAW Manager class
+# PRAW Manager class
 class RedditScrapeManager:
     def __init__(self, subreddit):
         # Receive arguments from object
@@ -50,8 +53,8 @@ class RedditScrapeManager:
         return subreddit_info
 
     def get_submission_data(self):
-        for submission in self.subreddit_instance.hot(limit=5):
-            #Will not scrape stickied posts
+        for submission in self.subreddit_instance.hot(limit=6):
+            # Will not scrape stickied posts
             if submission.stickied:
                 continue
             else:
@@ -60,17 +63,19 @@ class RedditScrapeManager:
                 temp_submission_dict['title'] = submission.title
                 temp_submission_dict['author'] = submission.author
                 temp_submission_dict['score'] = submission.score
-                temp_submission_dict['upvote_ratio'] = submission.upvote_ratio
-                temp_submission_dict['timestamp'] = submission.created_utc
+                temp_submission_dict['upvote_ratio'] = submission.upvote_ratio*100
+                temp_submission_dict['timestamp'] = time.strftime("%I:%M %p on %d %B", time.localtime(submission.created_utc))
                 temp_submission_dict['url'] = submission.url
                 # Process comment data by storing comments in comment_forest and calling get_comment_data on it
                 # Following line of code may be modified with: 'top', 'new', or 'controversial'
                 submission.comment_sort = 'top'
                 submission.comments.replace_more(limit=0)
                 comment_forest = submission.comments[:6]
-                # comments_list[] is a list of dictionaries containing individual comments data
-                comments_list = self.get_comment_data(comment_forest)
-                temp_submission_dict['comments'] = comments_list
+                # comment_data is a dictionary containing a submissions average sentiment score in 'average_sentiment_score' and 'comments_list'
+                comment_data = self.get_comment_data(comment_forest)
+                temp_submission_dict['comments'] = comment_data['comments_list']
+                #Calculate submissions's average sentiment score from its comments
+                temp_submission_dict['average_sentiment_score'] = comment_data['average_sentiment_score']
                 # Append temp_submission_dict to master_submission_data_list
                 self.master_submission_data_list.append(temp_submission_dict)
 
@@ -79,9 +84,12 @@ class RedditScrapeManager:
     def get_comment_data(self, comment_forest):
         # Initialize 'comments_list[]', a list of dictionaries, each storing an individual comment's data
         comments_list = []
+        #Initalize total_sentiment_score, to calculate an average from
+        total_sentiment_score = 0
         # Loops through comment_forest taken as argument and appends each top level comment to comments_list
         for top_level_comment in comment_forest:
-            if top_level_comment.stickied:
+            # Will not scrape stickied comments (usually AutoModerator, or meta posts) or comments longer than 950 characters (cost purposes)
+            if top_level_comment.stickied or len(top_level_comment.body) > 950:
                 continue
             else:
                 # Create temporary dictionary for each comment
@@ -90,17 +98,21 @@ class RedditScrapeManager:
                 temp_comment_data['text'] = top_level_comment.body
                 temp_comment_data['author'] = top_level_comment.author
                 temp_comment_data['score'] = top_level_comment.score
-                temp_comment_data['timestamp'] = top_level_comment.created_utc
+                temp_comment_data['timestamp'] = time.strftime("%I:%M %p on %d %B", time.localtime(top_level_comment.created_utc))
                 temp_comment_data['stickied'] = top_level_comment.stickied
 
                 # Calls get_sentiment_score and passes comment text as argument, returns sentiment score
-                # FOR DEBUGGING, GENERATE RANDOM NUMBER BETWEEN -1 AND 1 (UNCOMMENT NEXT LINE FOR PRODUCTION)
-                # temp_comment_data['sentiment_score'] = self.get_sentiment_score(temp_comment_data['text'])
-                temp_comment_data['sentiment_score'] = round(random.uniform(-1,1),2)
+                # NEXT LINE QUERIES GOOGLE CLOUD API (UNCOMMENT NEXT LINE FOR PRODUCTION)
+                temp_comment_data['sentiment_score'] = (self.get_sentiment_score(temp_comment_data['text']))*100
+                # FOR DEBUGGING, GENERATE RANDOM NUMBER BETWEEN -1 AND 1
+                # temp_comment_data['sentiment_score'] = (round(random.uniform(-1,1),2))*100
+                total_sentiment_score += temp_comment_data['sentiment_score']
                 # Append comment's dictionary to comments_list
                 comments_list.append(temp_comment_data)
-
-        return comments_list
+            
+        #Calculate average sentiment score for the submission
+        average_sentiment_score = total_sentiment_score/(len(comments_list))
+        return {'comments_list':comments_list, 'average_sentiment_score':average_sentiment_score}
 
     #Function queries Google Cloud's Natural Language API for each commment
     def get_sentiment_score(self, comment_text):
@@ -118,7 +130,3 @@ class RedditScrapeManager:
         sentiment_score = round(sentiment_score, 2)
         
         return sentiment_score
-
-#scrape_object = RedditScrapeManager('tifu') #Debugging arguments
-# Debugging
-#data_list = scrape_object.get_submission_data()
