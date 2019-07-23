@@ -5,9 +5,6 @@ from .api_keys import reddit_client_id, reddit_client_secret, reddit_user_agent
 # Import NotFound to validate subreddit form
 from prawcore import NotFound
 
-#RANDOM MODULE FOR DEBUGGING
-import random
-
 # Import time modules for UTC to local timezone conversion
 import time
 
@@ -104,8 +101,6 @@ class RedditScrapeManager:
                 # Calls get_sentiment_score and passes comment text as argument, returns sentiment score
                 # NEXT LINE QUERIES GOOGLE CLOUD API (UNCOMMENT NEXT LINE FOR PRODUCTION)
                 temp_comment_data['sentiment_score'] = (self.get_sentiment_score(temp_comment_data['text']))*100
-                # FOR DEBUGGING, GENERATE RANDOM NUMBER BETWEEN -1 AND 1
-                # temp_comment_data['sentiment_score'] = (round(random.uniform(-1,1),2))*100
                 total_sentiment_score += temp_comment_data['sentiment_score']
                 # Append comment's dictionary to comments_list
                 comments_list.append(temp_comment_data)
