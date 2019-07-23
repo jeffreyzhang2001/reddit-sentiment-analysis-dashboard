@@ -45,7 +45,7 @@ class PushshiftAPIScraperManager:
                                                           sort_type=self.sort_type,
                                                           after=self.after_time,
                                                           filter=['id', 'score', 'title', 'author'],)
-                                                          #before=self.before_time-6000)                                       
+                                                          #before=self.before_time)                                      
         return list(submissions_data)
 
     def process_submissions_data_list(self):
@@ -119,5 +119,14 @@ class PushshiftAPIScraperManager:
         
         return sentiment_score
 
-scrape_object = PushshiftAPIScraperManager('politics', 1, 'score', 1562719793, time.time()) #Debugging arguments
-print(scrape_object.process_submissions_data_list()[0]['comments'][2]['sentiment_score']) # Debugging
+scrape_object = PushshiftAPIScraperManager('politics', 3, 'score', round(time.time()-95040), round(time.time()-600)) #Debugging arguments
+# Debugging
+data_list = scrape_object.process_submissions_data_list()
+print(data_list[0]['title']) 
+print(data_list[0]['id'])
+print("*****************************")
+print(data_list[1]['title'])
+print(data_list[1]['id'])
+print("*****************************")
+print(data_list[2]['title'])
+print(data_list[2]['id'])
