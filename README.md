@@ -1,5 +1,5 @@
 # Reddit Sentiment Analysis Dashboard
-This web app is currently hosted at **http://redditsentiment.herokuapp.com/.**
+This web app is currently hosted at **https://redditsentiment.herokuapp.com/.**
 
 This web app utilizes **Django, Reddit's API** and **Google's Cloud Natural Language API** to offer an at-a-glance
 overview of a subreddit's overarching sentiment, with detailed statistics for each post and comment.
